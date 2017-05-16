@@ -32,22 +32,32 @@ public:
     }
 
     bool
-    beginWrite() {
+    beginWrite()
+    {
         return _storage.beginWrite();
     }
 
     bool
-    write(std::size_t address, uint16_t data) {
+    write(
+        std::size_t address,
+        uint16_t    data
+    )
+    {
         return _storage.writeUserData16(address, data);
     }
 
     bool
-    write(std::size_t address, uint32_t data) {
+    write(
+        std::size_t address,
+        uint32_t    data
+    )
+    {
         return _storage.writeUserData32(address, data);
     }
 
     bool
-    endWrite() {
+    endWrite()
+    {
         return _storage.endWrite();
     }
 

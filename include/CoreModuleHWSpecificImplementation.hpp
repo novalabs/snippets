@@ -44,6 +44,7 @@ const core::mw::CoreModule::UID&
 core::mw::CoreModule::uid()
 {
     static uint32_t tmp = 0xB0BAFE77;
+
     return tmp;
 }
 
@@ -51,7 +52,7 @@ const char*
 core::mw::CoreModule::name()
 {
 #if CORE_USE_CONFIGURATION_STORAGE
-    if(_configurationStorage.isValid()) {
+    if (_configurationStorage.isValid()) {
         return _configurationStorage.getModuleConfiguration()->name;
     }
 #endif
@@ -67,7 +68,7 @@ core::mw::CoreModule::canID()
 
 #else
 #if CORE_USE_CONFIGURATION_STORAGE
-    if(_configurationStorage.isValid()) {
+    if (_configurationStorage.isValid()) {
         return _configurationStorage.getModuleConfiguration()->canID;
     }
 #endif
