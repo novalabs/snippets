@@ -38,7 +38,7 @@ public:
     }
 
     bool
-    write(
+    write16(
         std::size_t address,
         uint16_t    data
     )
@@ -47,7 +47,7 @@ public:
     }
 
     bool
-    write(
+    write32(
         std::size_t address,
         uint32_t    data
     )
@@ -65,7 +65,10 @@ private:
     core::stm32_flash::ConfigurationStorage& _storage;
 };
 
-static STM32FlashConfigurationStorage _coreConfigurationStorage(_configurationStorage);
-
-core::mw::CoreConfigurationStorage& Module::configurationStorage = _coreConfigurationStorage;
+static STM32FlashConfigurationStorage __coreConfigurationStorage(_configurationStorage);
+core::mw::CoreConfigurationStorage&   core::mw::CoreModule::_coreConfigurationStorage = __coreConfigurationStorage;
+#else // if CORE_USE_CONFIGURATION_STORAGE
+#warning "Using /dev/null as storage for module configuration. Load/Save will have no effect."
+static core::mw::CoreConfigurationStorage __coreConfigurationStorage;
+core::mw::CoreConfigurationStorage&       core::mw::CoreModule::_coreConfigurationStorage = __coreConfigurationStorage;
 #endif // ifdef CORE_USE_CONFIGURATION_STORAGE

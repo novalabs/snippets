@@ -19,13 +19,17 @@ core::mw::CoreModule::Led::write(
 void
 core::mw::CoreModule::reset()
 {
+#ifdef CORE_USE_BOOTLOADER
     core::hw::IWDG_::woof();
+#endif
 }
 
 void
 core::mw::CoreModule::keepAlive()
 {
+#ifdef CORE_USE_BOOTLOADER
     core::hw::IWDG_::reload();
+#endif
 }
 
 void
