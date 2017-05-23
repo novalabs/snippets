@@ -1,3 +1,9 @@
+/* COPYRIGHT (c) 2016-2017 Nova Labs SRL
+ *
+ * All rights reserved. All use of this software and documentation is
+ * subject to the License Agreement located in the file LICENSE.
+ */
+
 // ----------------------------------------------------------------------------
 // CoreModule HW specific implementation
 // ----------------------------------------------------------------------------
@@ -77,6 +83,6 @@ core::mw::CoreModule::canID()
     }
 #endif
 
-    return core::hw::UID_::CPU_UID(0) ^ core::hw::UID_::CPU_UID(2);
+    return UID();
 #endif
 }
