@@ -41,6 +41,7 @@ BusFault_Handler(
     void
 )
 {
+#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -54,6 +55,7 @@ BusFault_Handler(
         " bx r2                                                     \n"
         " busfault_handler_address: .word getRegistersFromStack     \n"
     );
+#endif
 }
 
 void
@@ -61,6 +63,7 @@ HardFault_Handler(
     void
 )
 {
+#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -74,6 +77,7 @@ HardFault_Handler(
         " bx r2                                                     \n"
         " hardfault_handler_address: .word getRegistersFromStack    \n"
     );
+#endif
 }
 
 void
@@ -81,6 +85,7 @@ UsageFault_Handler(
     void
 )
 {
+#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -94,6 +99,7 @@ UsageFault_Handler(
         " bx r2                                                     \n"
         " usagefault_handler_address: .word getRegistersFromStack   \n"
     );
+#endif
 }
 
 __attribute__((used)) void
@@ -120,7 +126,9 @@ getRegistersFromStack(
     pc  = stack[6];
     psr = stack[7];
 
+#ifndef STM32F0
     cfsr = SCB->CFSR;
+#endif
 
     for (;;) {}
 } // getRegistersFromStack
