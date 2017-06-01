@@ -4,6 +4,8 @@
  * subject to the License Agreement located in the file LICENSE.
  */
 
+#ifdef __ARM_ARCH_7M__
+
 #include <core/snippets/CortexMxFaultHandlers.h>
 
 #include "ch.h"
@@ -27,13 +29,6 @@ UsageFault_Handler(
 
 
 void FAULT_HANDLERS_ENABLE(bool disable_write_buffer) {
-#if defined(STM32F4)
-    SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk | SCB_SHCSR_MEMFAULTENA_Msk;
-    if(disable_write_buffer) {
-        SCnSCB->ACTLR |= SCnSCB_ACTLR_DISDEFWBUF_Msk; // For precise BusFaults, we must disable the write buffer.
-    }
-#else
-#endif
 }
 
 void
@@ -41,7 +36,6 @@ BusFault_Handler(
     void
 )
 {
-#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -55,7 +49,6 @@ BusFault_Handler(
         " bx r2                                                     \n"
         " busfault_handler_address: .word getRegistersFromStack     \n"
     );
-#endif
 }
 
 void
@@ -63,7 +56,6 @@ HardFault_Handler(
     void
 )
 {
-#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -77,7 +69,6 @@ HardFault_Handler(
         " bx r2                                                     \n"
         " hardfault_handler_address: .word getRegistersFromStack    \n"
     );
-#endif
 }
 
 void
@@ -85,7 +76,6 @@ UsageFault_Handler(
     void
 )
 {
-#ifndef STM32F0
     __asm volatile
     (
         " tst lr, #4                                                \n"
@@ -99,7 +89,6 @@ UsageFault_Handler(
         " bx r2                                                     \n"
         " usagefault_handler_address: .word getRegistersFromStack   \n"
     );
-#endif
 }
 
 __attribute__((used)) void
@@ -126,10 +115,9 @@ getRegistersFromStack(
     pc  = stack[6];
     psr = stack[7];
 
-#ifndef STM32F0
     cfsr = SCB->CFSR;
-#endif
 
     for (;;) {}
 } // getRegistersFromStack
 
+#endif
