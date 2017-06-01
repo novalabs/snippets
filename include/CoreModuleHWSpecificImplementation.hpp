@@ -50,12 +50,23 @@ core::mw::CoreModule::enableBootloader()
     RTC->BKP0R = 0xB0BAFE77; // TODO: wrap it somewhere.
 }
 
+#include<core/stm32_crc/CRC.hpp>
+
 const core::mw::CoreModule::UID&
 core::mw::CoreModule::uid()
 {
-    static uint32_t tmp = 0xB0BAFE77;
+    static core::mw::CoreModule::UID _uid;
+    static bool initialized = false;
 
-    return tmp;
+    if(!initialized) {
+        core::stm32_crc::CRC::init();
+        core::stm32_crc::CRC::setPolynomialSize(core::stm32_crc::CRC::PolynomialSize::POLY_32);
+        core::stm32_crc::CRC::reset();
+        _uid = core::stm32_crc::CRC::CRCBlock(reinterpret_cast<uint32_t*>(0x1FFFF7ACu), 12 / sizeof(uint32_t));
+        initialized = true;
+    }
+
+    return _uid;
 }
 
 const char*
@@ -73,16 +84,18 @@ core::mw::CoreModule::name()
 uint8_t
 core::mw::CoreModule::canID()
 {
-#ifdef MODULE_ID
-    return MODULE_ID & 0xFF;
-
-#else
 #if CORE_USE_CONFIGURATION_STORAGE
     if (_configurationStorage.isValid()) {
         return _configurationStorage.getModuleConfiguration()->canID;
+    } else {
+        return UID();
     }
+#else
+#ifdef MODULE_ID
+    return MODULE_ID & 0xFF;
+#else
+    return UID();
 #endif
 
-    return UID();
 #endif
 }
