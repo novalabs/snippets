@@ -73,6 +73,7 @@ const char*
 core::mw::CoreModule::name()
 {
 #ifdef OVERRIDE_MODULE_NAME
+#warning "Overriding module Name"
     return OVERRIDE_MODULE_NAME;
 #else
 #if CORE_USE_CONFIGURATION_STORAGE
@@ -89,8 +90,8 @@ uint8_t
 core::mw::CoreModule::canID()
 {
 #ifdef OVERRIDE_MODULE_ID
+#warning "Overriding module ID"
     return OVERRIDE_MODULE_ID & 0xFF;
-
 #else
 #if CORE_USE_CONFIGURATION_STORAGE
     if (_configurationStorage.isValid()) {
