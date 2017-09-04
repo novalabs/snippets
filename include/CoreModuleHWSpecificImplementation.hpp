@@ -41,7 +41,7 @@ core::mw::CoreModule::keepAlive()
 void
 core::mw::CoreModule::disableBootloader()
 {
-    RTC->BKP0R = 0x55AA55AA; // TODO: wrap it somewhere.
+    RTC->BKP0R = 0xBAADF00D; // TODO: wrap it somewhere.
 }
 
 void
