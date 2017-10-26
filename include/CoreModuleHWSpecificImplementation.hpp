@@ -8,6 +8,13 @@
 // CoreModule HW specific implementation
 // ----------------------------------------------------------------------------
 
+#ifdef STM32F4XX
+#define UID_BASE (0x1FFF7A10u)
+#else
+#define UID_BASE (0x1FFFF7ACu)
+#endif
+
+
 void
 core::mw::CoreModule::Led::toggle()
 {
@@ -62,7 +69,7 @@ core::mw::CoreModule::uid()
         core::stm32_crc::CRC::init();
         core::stm32_crc::CRC::setPolynomialSize(core::stm32_crc::CRC::PolynomialSize::POLY_32);
         core::stm32_crc::CRC::reset();
-        _uid = core::stm32_crc::CRC::CRCBlock(reinterpret_cast<uint32_t*>(0x1FFFF7ACu), 12 / sizeof(uint32_t));
+        _uid = core::stm32_crc::CRC::CRCBlock(reinterpret_cast<uint32_t*>(UID_BASE), 12 / sizeof(uint32_t));
         initialized = true;
     }
 
