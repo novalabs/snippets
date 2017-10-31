@@ -27,6 +27,10 @@ UsageFault_Handler(
     void
 ) __attribute__((naked));
 
+void
+MemManage_Handler(
+    void
+) __attribute__((naked));
 
 void FAULT_HANDLERS_ENABLE(bool disable_write_buffer) {
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk | SCB_SHCSR_MEMFAULTENA_Msk;
@@ -92,6 +96,26 @@ UsageFault_Handler(
         " ldr r2, usagefault_handler_address                        \n"
         " bx r2                                                     \n"
         " usagefault_handler_address: .word getRegistersFromStack   \n"
+    );
+}
+
+void
+MemManage_Handler(
+    void
+)
+{
+    __asm volatile
+    (
+        " tst lr, #4                                                \n"
+        " ite eq                                                    \n"
+        " mrseq r0, msp                                             \n"
+        " mrsne r0, psp                                             \n"
+        " mov sp, r0                                                \n"
+        " bkpt #1                                                   \n"
+        " ldr r1, [r0, #24]                                         \n"
+        " ldr r2, memmanage_handler_address                         \n"
+        " bx r2                                                     \n"
+        " memmanage_handler_address: .word getRegistersFromStack    \n"
     );
 }
 
