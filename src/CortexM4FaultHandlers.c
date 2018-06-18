@@ -51,7 +51,9 @@ BusFault_Handler(
         " mrseq r0, msp                                             \n"
         " mrsne r0, psp                                             \n"
         " mov sp, r0                                                \n"
+#ifdef _DEBUG
         " bkpt #1                                                   \n"
+#endif
         " ldr r1, [r0, #24]                                         \n"
         " ldr r2, busfault_handler_address                          \n"
         " bx r2                                                     \n"
@@ -71,7 +73,9 @@ HardFault_Handler(
         " mrseq r0, msp                                             \n"
         " mrsne r0, psp                                             \n"
         " mov sp, r0                                                \n"
+#ifdef _DEBUG
         " bkpt #1                                                   \n"
+#endif
         " ldr r1, [r0, #24]                                         \n"
         " ldr r2, hardfault_handler_address                         \n"
         " bx r2                                                     \n"
@@ -91,7 +95,9 @@ UsageFault_Handler(
         " mrseq r0, msp                                             \n"
         " mrsne r0, psp                                             \n"
         " mov sp, r0                                                \n"
+#ifdef _DEBUG
         " bkpt #1                                                   \n"
+#endif
         " ldr r1, [r0, #24]                                         \n"
         " ldr r2, usagefault_handler_address                        \n"
         " bx r2                                                     \n"
@@ -111,7 +117,9 @@ MemManage_Handler(
         " mrseq r0, msp                                             \n"
         " mrsne r0, psp                                             \n"
         " mov sp, r0                                                \n"
+#ifdef _DEBUG
         " bkpt #1                                                   \n"
+#endif
         " ldr r1, [r0, #24]                                         \n"
         " ldr r2, memmanage_handler_address                         \n"
         " bx r2                                                     \n"
