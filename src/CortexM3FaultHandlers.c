@@ -121,7 +121,7 @@ getRegistersFromStack(
     pc  = stack[6];
     psr = stack[7];
 
-    cfsr = SCB->CFSR;
+    volatile SCB_Type scb = *SCB;
 
     for (;;) {}
 } // getRegistersFromStack
